@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ARTIST
+  ADMIN
+}
+
+enum PostType {
+  PHOTO
+  AUDIO
+  VIDEO
+  REEL
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  avatarUrl    String?
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+
+  artistProfile ArtistProfile?
+  bookings      Booking[]      @relation("CustomerBookings")
+  likes         Like[]
+  follows       Follow[]
+  comments      Comment[]
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model ArtistProfile {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  handle     String   @unique
+  stageName  String
+  bio        String   @default("")
+  category   String   @default("Musician")
+  city       String   @default("")
+  languages  String[] @default([])
+  coverUrl   String?
+  priceFrom  Int      @default(0)
+  verified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  posts     Post[]
+  followers Follow[]
+  packages  Package[]
+  bookings  Booking[]
+
+  @@index([category])
+  @@index([city])
+}
+
+model Post {
+  id           String        @id @default(cuid())
+  artistId     String
+  artist       ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  type         PostType
+  mediaUrl     String
+  thumbnailUrl String?
+  caption      String        @default("")
+  durationSec  Int?
+  createdAt    DateTime      @default(now())
+
+  likes    Like[]
+  comments Comment[]
+
+  @@index([artistId, createdAt])
+  @@index([type, createdAt])
+}
+
+model Follow {
+  userId    String
+  artistId  String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  artist    ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+
+  @@id([userId, artistId])
+}
+
+model Like {
+  userId    String
+  postId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, postId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([postId, createdAt])
+}
+
+model Package {
+  id          String        @id @default(cuid())
+  artistId    String
+  artist      ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  title       String
+  description String        @default("")
+  price       Int
+  durationMin Int           @default(60)
+  createdAt   DateTime      @default(now())
+
+  bookings Booking[]
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  customerId String
+  customer   User          @relation("CustomerBookings", fields: [customerId], references: [id], onDelete: Cascade)
+  artistId   String
+  artist     ArtistProfile @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  packageId  String?
+  package    Package?      @relation(fields: [packageId], references: [id], onDelete: SetNull)
+  eventDate  DateTime
+  location   String
+  notes      String        @default("")
+  price      Int
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([customerId])
+  @@index([artistId, status])
+}
