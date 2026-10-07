@@ -10,6 +10,7 @@
     "build:web": "npm run build -w apps/web",
     "db:migrate": "npm run prisma:migrate -w apps/api",
     "db:seed": "npm run seed -w apps/api",
-    "start": "node index.ts"
+    "build": "tsc",
+    "start": "node dist/index.js"
   }
 }
