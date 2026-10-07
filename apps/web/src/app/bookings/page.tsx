@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api, inr } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import type { Booking } from "@/lib/types";
-import { Vinyl } from "@/components/ArtistCard";
+import { Avatar } from "@/components/Avatar";
 
 export default function BookingsPage() {
   const { user, loading } = useAuth();
@@ -19,7 +19,7 @@ export default function BookingsPage() {
     if (user?.role === "USER") load();
   }, [user, load]);
 
-  if (loading) return <div className="wrap" style={{ paddingTop: 48 }}>Loading…</div>;
+  if (loading) return <div className="wrap" style={{ paddingTop: 8 }}>Loading…</div>;
   if (!user) return <div className="auth card stack"><p>Please sign in to see your bookings.</p><Link className="btn primary" href="/login?next=/bookings">Sign in</Link></div>;
   if (user.role !== "USER") return <div className="auth card stack"><p>Artists manage requests in the Studio.</p><Link className="btn primary" href="/studio">Open Studio</Link></div>;
 
@@ -29,7 +29,7 @@ export default function BookingsPage() {
   };
 
   return (
-    <div className="wrap" style={{ paddingTop: 36 }}>
+    <div className="wrap" style={{ paddingTop: 6 }}>
       <div className="eyebrow">Your tickets</div>
       <h1 style={{ fontSize: "clamp(2rem,5vw,3.2rem)", margin: "8px 0 22px" }}>My bookings</h1>
       {items === null ? (
@@ -39,7 +39,7 @@ export default function BookingsPage() {
           {items.map((b) => (
             <div key={b.id} className="list-item">
               <div className="row" style={{ flexWrap: "nowrap" }}>
-                <Vinyl src={b.artist.user.avatarUrl} size={54} />
+                <Avatar src={b.artist.user.avatarUrl} size={54} />
                 <div>
                   <Link href={`/artists/${b.artist.handle}`}><b>{b.artist.stageName}</b></Link>
                   <div className="muted small">{new Date(b.eventDate).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })} · {b.location}</div>

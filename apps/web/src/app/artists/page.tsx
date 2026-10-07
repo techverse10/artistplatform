@@ -43,7 +43,7 @@ function Directory() {
   }, [q, category, city, sort]);
 
   return (
-    <div className="wrap" style={{ paddingTop: 36 }}>
+    <div className="wrap" style={{ paddingTop: 6 }}>
       <div className="eyebrow">Directory</div>
       <h1 style={{ fontSize: "clamp(2rem,5vw,3.4rem)", margin: "8px 0 22px" }}>Artists</h1>
 
@@ -87,7 +87,7 @@ function Directory() {
 
 export default function ArtistsPage() {
   return (
-    <Suspense fallback={<div className="wrap" style={{ paddingTop: 36 }}>Loading…</div>}>
+    <Suspense fallback={<div className="wrap" style={{ paddingTop: 6 }}>Loading…</div>}>
       <Directory />
     </Suspense>
   );

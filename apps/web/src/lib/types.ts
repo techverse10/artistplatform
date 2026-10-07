@@ -39,7 +39,16 @@ export interface Post {
   durationSec: number | null;
   createdAt: string;
   liked: boolean;
-  artist: { id: string; handle: string; stageName: string; verified: boolean; user: { avatarUrl: string | null } };
+  artist: {
+    id: string;
+    handle: string;
+    stageName: string;
+    verified: boolean;
+    category: string;
+    city: string;
+    priceFrom: number;
+    user: { avatarUrl: string | null };
+  };
   _count: { likes: number; comments: number };
 }
 

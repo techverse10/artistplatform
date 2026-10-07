@@ -46,7 +46,12 @@ Demo logins (after seeding), password `password123`:
 
 ## Design: "Stagelight"
 
-Dark backstage ink with warm spotlight gradients and film grain; Fraunces serif headlines; rotating **vinyl-disc avatars**; animated **waveform** audio players; a notched **admit-one ticket** for the booking summary. On phones the top nav becomes a bottom tab bar and profiles get a sticky "Book now" bar.
+Three-column social layout (sidebar, feed, right rail) in the logo's amber, flame and crimson on plum-black. Headlines use Bricolage Grotesque, body uses Figtree.
+
+- **Spotlight hero:** the featured artist's cover sits in the dark and a stage light follows the cursor. It drifts on its own on touch devices and stays still for reduced-motion users.
+- **Feed:** photos, reels (autoplay muted in view), video and inline audio, with likes and comments. Every post has a **Book from ₹X** button.
+- **Story-ring avatars** in the logo gradient, a notched **admit-one ticket** for the booking summary.
+- **Responsive:** full sidebar and right rail on desktop, icon rail on tablet, bottom tab bar on phones.
 
 ## Before launch (not built yet)
 

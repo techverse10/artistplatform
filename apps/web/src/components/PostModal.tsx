@@ -6,7 +6,7 @@ import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import type { Post } from "@/lib/types";
 import { AudioPlayer } from "./AudioPlayer";
-import { Vinyl } from "./ArtistCard";
+import { Avatar } from "./Avatar";
 
 export function PostModal({ post, onClose }: { post: Post; onClose: () => void }) {
   const { user } = useAuth();
@@ -54,7 +54,7 @@ export function PostModal({ post, onClose }: { post: Post; onClose: () => void }
         <div className="modal-side">
           <div className="spread">
             <Link href={`/artists/${post.artist.handle}`} className="row" onClick={onClose}>
-              <Vinyl src={post.artist.user.avatarUrl} size={40} />
+              <Avatar src={post.artist.user.avatarUrl} size={40} />
               <b>{post.artist.stageName}</b>
             </Link>
             <button className="btn sm ghost" onClick={onClose} aria-label="Close">

@@ -34,7 +34,18 @@ const ALLOWED: Record<PostType, string> = {
 const upload = multer({ storage, limits: { fileSize: 200 * 1024 * 1024 } });
 
 const include = (userId?: string) => ({
-  artist: { select: { id: true, handle: true, stageName: true, verified: true, user: { select: { avatarUrl: true } } } },
+  artist: {
+    select: {
+      id: true,
+      handle: true,
+      stageName: true,
+      verified: true,
+      category: true,
+      city: true,
+      priceFrom: true,
+      user: { select: { avatarUrl: true } },
+    },
+  },
   _count: { select: { likes: true, comments: true } },
   ...(userId ? { likes: { where: { userId }, select: { userId: true } } } : {}),
 });
@@ -53,13 +64,21 @@ postsRouter.get(
       z.object({
         type: z.nativeEnum(PostType).optional(),
         handle: z.string().optional(),
+        category: z.string().optional(),
         cursor: z.string().optional(),
         limit: z.coerce.number().min(1).max(40).default(20),
       }),
       req.query
     );
+    const artistWhere = {
+      ...(q.handle ? { handle: q.handle } : {}),
+      ...(q.category ? { category: { equals: q.category, mode: "insensitive" as const } } : {}),
+    };
     const rows = await prisma.post.findMany({
-      where: { ...(q.type ? { type: q.type } : {}), ...(q.handle ? { artist: { handle: q.handle } } : {}) },
+      where: {
+        ...(q.type ? { type: q.type } : {}),
+        ...(Object.keys(artistWhere).length ? { artist: artistWhere } : {}),
+      },
       orderBy: { createdAt: "desc" },
       take: q.limit + 1,
       ...(q.cursor ? { cursor: { id: q.cursor }, skip: 1 } : {}),

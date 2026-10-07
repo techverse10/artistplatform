@@ -12,14 +12,14 @@ export default function StudioPage() {
   const { user, loading } = useAuth();
   const [tab, setTab] = useState<Tab>("upload");
 
-  if (loading) return <div className="wrap" style={{ paddingTop: 48 }}>Loading…</div>;
+  if (loading) return <div className="wrap" style={{ paddingTop: 8 }}>Loading…</div>;
   if (!user) return <div className="auth card stack"><p>Sign in to open your studio.</p><Link className="btn primary" href="/login?next=/studio">Sign in</Link></div>;
   if (user.role !== "ARTIST" || !user.artistProfile)
     return <div className="auth card stack"><p>The Studio is for artist accounts.</p><Link className="btn primary" href="/register?role=ARTIST">Become an artist</Link></div>;
 
   const handle = user.artistProfile.handle;
   return (
-    <div className="wrap" style={{ paddingTop: 36 }}>
+    <div className="wrap" style={{ paddingTop: 6 }}>
       <div className="spread">
         <div>
           <div className="eyebrow">Studio</div>

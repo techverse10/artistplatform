@@ -29,8 +29,8 @@ export default function BookPage({ params }: { params: Promise<{ handle: string 
       .catch(() => setMissing(true));
   }, [handle]);
 
-  if (missing) return <div className="wrap" style={{ paddingTop: 48 }}><div className="empty">Artist not found.</div></div>;
-  if (!artist || loading) return <div className="wrap" style={{ paddingTop: 48 }}>Loading…</div>;
+  if (missing) return <div className="wrap" style={{ paddingTop: 8 }}><div className="empty">Artist not found.</div></div>;
+  if (!artist || loading) return <div className="wrap" style={{ paddingTop: 8 }}>Loading…</div>;
 
   if (!user || user.role !== "USER") {
     return (
@@ -70,7 +70,7 @@ export default function BookPage({ params }: { params: Promise<{ handle: string 
   };
 
   return (
-    <div className="wrap" style={{ paddingTop: 36 }}>
+    <div className="wrap" style={{ paddingTop: 6 }}>
       <div className="eyebrow">Booking request</div>
       <h1 style={{ fontSize: "clamp(2rem,5vw,3.2rem)", margin: "8px 0 24px" }}>Book {artist.stageName}</h1>
 

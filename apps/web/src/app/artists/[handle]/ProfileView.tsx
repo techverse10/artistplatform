@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { api, compact, inr } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import type { ArtistFull, Post } from "@/lib/types";
-import { Vinyl } from "@/components/ArtistCard";
+import { Avatar } from "@/components/Avatar";
 import { PostModal } from "@/components/PostModal";
 import { Waveform } from "@/components/AudioPlayer";
 
@@ -53,7 +53,7 @@ export function ProfileView({ artist, posts }: { artist: ArtistFull; posts: Post
       <div className="p-cover">{artist.coverUrl && <img src={artist.coverUrl} alt="" />}</div>
       <div className="wrap">
         <div className="p-head">
-          <Vinyl src={artist.user.avatarUrl} size={132} spin alt={artist.stageName} />
+          <Avatar src={artist.user.avatarUrl} size={128} alt={artist.stageName} />
           <div style={{ flex: 1, minWidth: 220 }}>
             <h1>
               {artist.stageName}
