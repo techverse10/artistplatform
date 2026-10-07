@@ -2,7 +2,9 @@
   "name": "artist-app",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "dev:api": "npm run dev -w apps/api",
     "dev:web": "npm run dev -w apps/web",
@@ -12,5 +14,8 @@
     "db:seed": "npm run seed -w apps/api",
     "build": "tsc",
     "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }
