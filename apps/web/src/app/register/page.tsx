@@ -87,7 +87,7 @@ function RegisterForm() {
       {error && <p className="error" role="alert">{error}</p>}
       <button className="btn primary block" disabled={busy}>{busy ? "Creating…" : "Create account"}</button>
       <p className="muted small">
-        Already have one? <Link href="/login" style={{ color: "var(--amber)" }}>Sign in</Link>
+        Already have one? <Link href="/login" style={{ color: "var(--accent)" }}>Sign in</Link>
       </p>
     </form>
   );

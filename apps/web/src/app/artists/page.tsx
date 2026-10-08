@@ -47,8 +47,8 @@ function Directory() {
       <div className="eyebrow">Directory</div>
       <h1 style={{ fontSize: "clamp(2rem,5vw,3.4rem)", margin: "8px 0 22px" }}>Artists</h1>
 
-      <div className="form-grid" style={{ gridTemplateColumns: "2fr 1fr 1fr" }}>
-        <input className="input" placeholder="Search name, style, bio…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search" />
+      <div className="filter-grid">
+        <input className="input" placeholder="Search name, style or bio" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Search" />
         <input className="input" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} aria-label="City" />
         <select className="input" value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort">
           <option value="popular">Most followed</option>

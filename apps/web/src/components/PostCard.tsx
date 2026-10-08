@@ -70,7 +70,7 @@ function FeedVideo({ post }: { post: Post }) {
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="none"
         onClick={toggle}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
@@ -175,7 +175,7 @@ export function PostCard({ post }: { post: Post }) {
 
       {post.type === "PHOTO" && (
         <div className="pm photo">
-          <img src={post.mediaUrl} alt={post.caption || `Photo by ${a.stageName}`} loading="lazy" />
+          <img src={post.mediaUrl} alt={post.caption || `Photo by ${a.stageName}`} loading="lazy" decoding="async" />
         </div>
       )}
       {(post.type === "REEL" || post.type === "VIDEO") && (

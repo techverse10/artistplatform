@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { Avatar } from "./Avatar";
 import { Ic, type IconName } from "./Icons";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface Item {
   href: string;
@@ -100,9 +101,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
           <form action="/artists" className="search" role="search">
             <Ic n="search" />
-            <input name="q" placeholder="Search artists, styles, cities" aria-label="Search artists" />
+            <input name="q" placeholder="Search artists" aria-label="Search artists" />
           </form>
           <div className="top-actions">
+            <ThemeToggle />
             {user ? (
               <>
                 <Link href={isArtist ? "/studio" : "/bookings"} className="row hide-m" style={{ gap: 10 }}>

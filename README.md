@@ -51,6 +51,7 @@ Three-column social layout (sidebar, feed, right rail) in the logo's amber, flam
 - **Spotlight hero:** the featured artist's cover sits in the dark and a stage light follows the cursor. It drifts on its own on touch devices and stays still for reduced-motion users.
 - **Feed:** photos, reels (autoplay muted in view), video and inline audio, with likes and comments. Every post has a **Book from ₹X** button.
 - **Story-ring avatars** in the logo gradient, a notched **admit-one ticket** for the booking summary.
+- **Light and dark themes:** light is the default. The sun/moon button in the top bar switches, remembers the choice, and applies it before the page paints so there is no flash. The spotlight hero, audio panels and booking ticket stay dark in both themes.
 - **Responsive:** full sidebar and right rail on desktop, icon rail on tablet, bottom tab bar on phones.
 
 ## Before launch (not built yet)

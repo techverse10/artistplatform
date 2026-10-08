@@ -45,7 +45,7 @@ function LoginForm() {
       {error && <p className="error" role="alert">{error}</p>}
       <button className="btn primary block" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
       <p className="muted small">
-        New here? <Link href="/register" style={{ color: "var(--amber)" }}>Create an account</Link>
+        New here? <Link href="/register" style={{ color: "var(--accent)" }}>Create an account</Link>
       </p>
       <p className="muted small">Demo: fan@example.com or aarav_strings@example.com · password123</p>
     </form>

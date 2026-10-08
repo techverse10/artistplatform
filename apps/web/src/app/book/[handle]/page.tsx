@@ -107,7 +107,7 @@ export default function BookPage({ params }: { params: Promise<{ handle: string 
           </div>
         </div>
 
-        <aside className="ticket" style={{ position: "sticky", top: 84 }}>
+        <aside className="ticket sticky">
           <div className="eyebrow">Admit one</div>
           <h2 style={{ margin: "6px 0" }}>{artist.stageName}</h2>
           <div className="muted small">{artist.category}{artist.city ? ` · ${artist.city}` : ""}</div>

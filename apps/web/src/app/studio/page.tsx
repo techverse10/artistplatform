@@ -126,7 +126,7 @@ function UploadPanel({ handle }: { handle: string }) {
       <div>
         <b>Your posts ({posts.length})</b>
         {posts.length ? (
-          <div className="media-grid" style={{ gridTemplateColumns: "repeat(3,1fr)" }}>
+          <div className="media-grid manage">
             {posts.map((p) => (
               <div key={p.id} className="tile" style={{ cursor: "default" }}>
                 {p.type === "AUDIO" ? <div className="tile audio" style={{ width: "100%", height: "100%" }}>♪</div> : <img src={p.thumbnailUrl ?? p.mediaUrl} alt="" />}

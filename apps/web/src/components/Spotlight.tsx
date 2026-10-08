@@ -9,29 +9,33 @@ import { Avatar } from "./Avatar";
 /**
  * Featured-artist hero. The cover photo sits in the dark; a stage light (a masked, brighter copy of the
  * same photo) follows the pointer. With no pointer, or on touch, the light drifts on its own.
- * Reduced-motion users get a still light and no auto-rotation.
+ * The light only animates while visible; touch devices and reduced-motion users get a cheaper or still version.
  */
 export function Spotlight({ artists }: { artists: ArtistCardData[] }) {
   const list = artists.filter((a) => a.coverUrl).slice(0, 4);
   const [i, setI] = useState(0);
-  const box = useRef<HTMLDivElement>(null);
+  const box = useRef<HTMLElement>(null);
   const held = useRef(false);
 
   useEffect(() => {
     const el = box.current;
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Touch devices get a cheap CSS-only drifting beam (see globals.css), so no per-frame work here.
+    const touch = window.matchMedia("(pointer: coarse)").matches;
     const aim = (x: number, y: number) => {
       el.style.setProperty("--mx", `${x}px`);
       el.style.setProperty("--my", `${y}px`);
     };
     const start = el.getBoundingClientRect();
     aim(start.width * 0.6, start.height * 0.4);
-    if (reduce) return;
 
+    // Everything below runs only while the hero is actually on screen.
     const t0 = performance.now();
     let raf = 0;
+    let visible = false;
     const tick = (t: number) => {
+      if (!visible) return;
       if (!held.current) {
         const r = el.getBoundingClientRect();
         const s = (t - t0) / 1000;
@@ -39,12 +43,18 @@ export function Spotlight({ artists }: { artists: ArtistCardData[] }) {
       }
       raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
+    const io = new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      cancelAnimationFrame(raf);
+      if (visible && !reduce && !touch) raf = requestAnimationFrame(tick);
+    });
+    io.observe(el);
 
     const rotate = window.setInterval(() => {
-      if (!held.current && list.length > 1) setI((n) => (n + 1) % list.length);
+      if (visible && !held.current && !reduce && list.length > 1) setI((n) => (n + 1) % list.length);
     }, 7000);
     return () => {
+      io.disconnect();
       cancelAnimationFrame(raf);
       window.clearInterval(rotate);
     };
