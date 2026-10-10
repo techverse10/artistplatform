@@ -1,4 +1,16 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+const configured = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
+const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(configured);
+
+/** Browser: same-origin ("" -> /api/... proxied by Next) unless a real public API URL is configured. */
+export const API_URL = configured && !isLocal ? configured : "";
+/** Server components call the API directly. */
+const SERVER_API = (process.env.API_ORIGIN || configured || "http://localhost:4000").replace(/\/+$/, "");
+
+/** Uploaded-media links saved as http://localhost:4000/uploads/... only work on the dev machine; make them relative. */
+const fixMedia = (text: string) => text.replace(/https?:\/\/(?:localhost|127\.0\.0\.1):\d+\/uploads\//g, "/uploads/");
+function parse<T>(text: string): T {
+  return JSON.parse(fixMedia(text)) as T;
+}
 
 const KEY = "aa_tokens";
 
@@ -74,20 +86,23 @@ export async function api<T = unknown>(path: string, opts: Opts = {}, retried = 
   if (res.status === 401 && !retried && t && (await refresh())) return api<T>(path, opts, true);
   if (res.status === 204) return undefined as T;
 
-  const data = await res.json().catch(() => ({}));
+  const data = await res.text().then((t) => parse<unknown>(t)).catch(() => ({}));
   if (!res.ok) throw new ApiError(res.status, (data as { error?: string }).error ?? "Request failed");
   return data as T;
 }
 
 /** Server-component fetch (no auth). Returns null instead of throwing so pages degrade gracefully. */
 export async function serverGet<T>(path: string): Promise<T | null> {
-  try {
-    const res = await fetch(`${API_URL}/api${path}`, { cache: "no-store" });
-    if (!res.ok) return null;
-    return (await res.json()) as T;
-  } catch {
-    return null;
+  // Two quick attempts with a timeout: a cold or briefly busy API should not make the hero vanish.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(`${SERVER_API}/api${path}`, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+      if (res.ok) return parse<T>(await res.text());
+    } catch {
+      /* try again */
+    }
   }
+  return null;
 }
 
 export const inr = (n: number) =>

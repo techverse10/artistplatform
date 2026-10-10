@@ -301,7 +301,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; l
 /* ── the spotlight (signature moment; always a dark stage) ── */
 .spot {
   position: relative; isolation: isolate; overflow: hidden; border-radius: 28px; border: 1px solid var(--line2);
-  min-height: clamp(340px, 54vw, 460px); background: #000; cursor: crosshair; touch-action: pan-y;
+  min-height: clamp(340px, 54vw, 460px); background: linear-gradient(135deg, #2a1236, #0a0810 70%); cursor: crosshair; touch-action: pan-y;
+  display: flex; flex-direction: column; justify-content: flex-end;
 }
 .spot .layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .spot .dim { filter: brightness(0.26) saturate(0.6); }
@@ -319,7 +320,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; l
 .spot-dots button { position: relative; width: 26px; height: 26px; padding: 0; border: 0; background: none; display: grid; place-items: center; }
 .spot-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, 0.4); transition: width 0.25s, background 0.25s; }
 .spot-dots button.on::before { width: 26px; background: var(--amber); }
-.spot-body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+.spot-body { position: relative; z-index: 2; padding: 72px 24px 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
 .spot-name { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .spot h2 { font-size: clamp(2rem, 6vw, 3.4rem); display: flex; align-items: center; gap: 10px; overflow-wrap: anywhere; }
 .spot-meta { color: rgba(246, 239, 247, 0.8); margin-top: 6px; }
@@ -504,7 +505,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; l
   .top-actions .hide-m { display: none; }
   .page { padding: 16px 14px calc(var(--tab) + 58px + env(safe-area-inset-bottom)); }
   .spot { border-radius: 22px; min-height: 380px; }
-  .spot-body { padding: 18px; }
+  .spot-body { padding: 68px 18px 18px; }
   .spot-act .btn { flex: 1 1 auto; }
   .post { border-radius: 20px; }
   .post-acts .book { margin-left: 0; flex: 1 1 100%; order: 3; }
@@ -603,3 +604,11 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; l
 /* flex/grid children must be allowed to shrink below their longest word, otherwise long text widens the page */
 .list-item > *, .post-h .who, .spot-name > div, .rrow .grow, .p-head > div, .row > div, .cm-list li > p, .post-cap, .modal-side, .modal-side > *, .stack > *, .split > * { min-width: 0; }
 .list-item b, .list-item span, .list-item div, .cm-list p, .post-cap p, .who b, .who span { overflow-wrap: anywhere; }
+
+
+/* ── placeholders while the first data loads ── */
+.spot.skeleton { cursor: default; animation: sk-pulse 1.4s ease-in-out infinite; }
+.avatar.sk { display: block; border-radius: 50%; background: var(--s2); animation: sk-pulse 1.4s ease-in-out infinite; }
+.sk-line { display: block; width: 56px; height: 10px; border-radius: 6px; background: var(--s2); }
+@keyframes sk-pulse { 50% { opacity: 0.6; } }
+@media (max-width: 520px) { .spot-body { padding: 64px 16px 18px; } .spot-top { top: 14px; left: 14px; right: 14px; } }

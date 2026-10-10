@@ -65,3 +65,7 @@ Payments, notifications, availability calendar, reviews, reporting/moderation, S
 - Mobile stability: `svh` heights, `overflow-x: clip`, long-text wrapping, safe-area insets, 16px inputs.
 - Test performance with `npm run build && npm run start`, not `next dev`. On a phone, set the API URL to your computer's LAN IP, not `localhost`.
 - The code has not been run end to end here (package installs were blocked), so please report anything that looks off.
+
+## Opening the site on a phone
+
+The browser only talks to the web app (same origin); Next.js forwards `/api` and `/uploads` to the API. So on the same Wi-Fi, run `npm run dev` for web and API, then open `http://<your-computer-LAN-IP>:3000` on the phone. No API URL change is needed. Set `API_ORIGIN` (server side) if the API is not on `localhost:4000`.

@@ -2,8 +2,7 @@ import { serverGet } from "@/lib/api";
 import type { ArtistCardData, Post } from "@/lib/types";
 import { Feed } from "@/components/Feed";
 import { Rail } from "@/components/Rail";
-import { Rings } from "@/components/Rings";
-import { Spotlight } from "@/components/Spotlight";
+import { HomeTop } from "@/components/HomeTop";
 
 export const dynamic = "force-dynamic";
 
@@ -20,8 +19,7 @@ export default async function Home() {
   return (
     <div className="home">
       <div className="feed">
-        <Spotlight artists={list} />
-        <Rings artists={list} />
+        <HomeTop initial={list} />
         <Feed initial={{ items: posts?.items ?? [], nextCursor: posts?.nextCursor ?? null }} categories={categories} />
       </div>
       <Rail artists={list} categories={categories} />
