@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  minimumScale: 1, // stop Android Chrome from widening the layout to fit an overflowing row
   themeColor: "#f6f3f8",
   viewportFit: "cover",
 };

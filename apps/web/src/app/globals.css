@@ -495,7 +495,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; l
 }
 @media (max-width: 760px) {
   :root { --g-blur: 16px; }
-  .shell { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
   .side { display: none; }
   .tabbar { display: grid; }
   .mlogo { display: flex; }
@@ -612,3 +612,17 @@ h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; l
 .sk-line { display: block; width: 56px; height: 10px; border-radius: 6px; background: var(--s2); }
 @keyframes sk-pulse { 50% { opacity: 0.6; } }
 @media (max-width: 520px) { .spot-body { padding: 64px 16px 18px; } .spot-top { top: 14px; left: 14px; right: 14px; } }
+
+/* Grid/flex children must be allowed to shrink below their content, or one long scrolling row stretches the whole page. */
+.shell > *, .main, .home > *, .feed > *, .page > *, .wrap > *, .rings, .chips, .seg, .filters > * { min-width: 0; max-width: 100%; }
+.home, .feed, .filters { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1241px) { .home { grid-template-columns: minmax(0, 660px) 340px; } }
+
+/* ── hard guarantees against sideways stretch on phones ── */
+html { overflow-x: clip; max-width: 100%; }
+body { max-width: 100%; }
+/* Scrolling rows must never contribute their content width to the page, however many items they hold. */
+.rings, .chips { contain: inline-size; }
+@media (max-width: 760px) { .seg { display: flex; width: 100%; contain: inline-size; } }
+.pm.reel { grid-template-columns: minmax(0, 1fr); }
+.spot, .post, .pm, .acard, .card, .ticket, .modal-card { max-width: 100%; }
