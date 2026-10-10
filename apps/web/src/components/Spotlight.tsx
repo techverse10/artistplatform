@@ -79,8 +79,8 @@ export function Spotlight({ artists }: { artists: ArtistCardData[] }) {
         held.current = false;
       }}
     >
-      <img key={`d-${a.id}`} className="layer dim" src={a.coverUrl!} alt="" />
-      <img key={`l-${a.id}`} className="layer lit" src={a.coverUrl!} alt="" aria-hidden />
+      <img key={`d-${a.id}`} className="layer dim" src={a.coverUrl!} alt="" decoding="async" />
+      <img key={`l-${a.id}`} className="layer lit" src={a.coverUrl!} alt="" aria-hidden fetchPriority="high" decoding="async" />
       <div className="beam" />
       <div className="shade" />
 

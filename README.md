@@ -57,3 +57,11 @@ Three-column social layout (sidebar, feed, right rail) in the logo's amber, flam
 ## Before launch (not built yet)
 
 Payments, notifications, availability calendar, reviews, reporting/moderation, S3 upload with video transcoding, rate limiting, tests.
+
+
+## Glass and mobile notes
+
+- iPhone-style frosted glass is used only on small fixed chrome (top bar, floating tab bar, sheets, pills). Large scrolling cards stay solid so phones scroll smoothly.
+- Mobile stability: `svh` heights, `overflow-x: clip`, long-text wrapping, safe-area insets, 16px inputs.
+- Test performance with `npm run build && npm run start`, not `next dev`. On a phone, set the API URL to your computer's LAN IP, not `localhost`.
+- The code has not been run end to end here (package installs were blocked), so please report anything that looks off.

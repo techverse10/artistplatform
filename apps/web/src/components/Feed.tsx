@@ -29,12 +29,15 @@ export function Feed({ initial, categories }: { initial: Page; categories: { cat
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
   const seq = useRef(0);
+  const inflight = useRef(false);
   const first = useRef(true);
   const sentinel = useRef<HTMLDivElement>(null);
 
   const load = useCallback(
     async (reset: boolean, from: string | null) => {
+      if (!reset && inflight.current) return; // never start two "load more" requests at once
       const mine = ++seq.current;
+      inflight.current = true;
       const params = new URLSearchParams({ limit: "10" });
       if (type !== "ALL") params.set("type", type);
       if (category) params.set("category", category);
@@ -49,7 +52,10 @@ export function Feed({ initial, categories }: { initial: Page; categories: { cat
       } catch {
         if (mine === seq.current) setFailed(true);
       } finally {
-        if (mine === seq.current) setBusy(false);
+        if (mine === seq.current) {
+          setBusy(false);
+          inflight.current = false;
+        }
       }
     },
     [type, category]
@@ -70,7 +76,8 @@ export function Feed({ initial, categories }: { initial: Page; categories: { cat
 
   useEffect(() => {
     const el = sentinel.current;
-    if (!el || !cursor) return;
+    // After an error, stop auto-loading; the visitor taps "Try again" instead of the app retrying in a loop.
+    if (!el || !cursor || failed) return;
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting && !busy) load(false, cursor);
@@ -79,7 +86,7 @@ export function Feed({ initial, categories }: { initial: Page; categories: { cat
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [cursor, busy, load]);
+  }, [cursor, busy, failed, load]);
 
   return (
     <div className="feed">
